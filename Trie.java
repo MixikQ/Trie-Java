@@ -8,7 +8,7 @@ public class Trie {
     
     public Trie(char letter) {
         childs = new Trie[0];
-        terminal = true;
+        terminal = false;
         this.letter = letter;
     }
     public Trie() {
@@ -31,32 +31,40 @@ public class Trie {
         char letter = word.charAt(0); // get first letter from word
         String newWord = word.substring(1); // cut first letter from word
 
-        if (terminal != true) { // if last vertex
-            Trie NewTrie = new Trie(letter); // create new Trie
+        if (newWord.isEmpty()) {
+            terminal = true;
+        }
+        
+        int index = findLetterIndex(letter);
+        if (index >= 0) { // go to next Trie vertex
+            Trie NewTrie = this.childs[index];
+            NewTrie.insertWord(newWord);
+        } else {
+            Trie NewTrie = new Trie(letter);
             childs = Arrays.copyOf(childs, childs.length + 1); // add slot to new Trie vertex
             childs[childs.length - 1] = NewTrie; // change last empty element to NewTrie
-
-            terminal = false; // set the Trie has childs
             NewTrie.insertWord(newWord); // same function with substring
-        }
-        else { // if not last
-            int index = findLetterIndex(letter);
-            if (index >= 0) { // go to next Trie vertex
-                Trie NewTrie = this.childs[index];
-                NewTrie.insertWord(newWord);
-            } else {
-                Trie NewTrie = new Trie(letter);
-                childs = Arrays.copyOf(childs, childs.length + 1); // add slot to new Trie vertex
-                childs[childs.length - 1] = NewTrie; // change last empty element to NewTrie
-
-                NewTrie.insertWord(newWord); // same function with substring
-            }
         }
     }
 
-    // public boolean containsWord(String word) {
-    // 
-    // }
+    public boolean containsWord(String word) {
+        word = word.toLowerCase();
+        if (word.isEmpty()) return true;
+
+        char letter = word.charAt(0); // get first letter from word
+        String newWord = word.substring(1); // cut first letter from word
+
+        if (newWord.isEmpty() && this.terminal == false) {
+            return false;
+        }
+
+        int index = this.findLetterIndex(letter);
+        if (index >= 0) {
+            Trie newTrie = this.childs[index];
+            return newTrie.containsWord(newWord);
+        }
+        return false;
+    }
 
     // public boolean startsWith(String prefix) {
     // 
