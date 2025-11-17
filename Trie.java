@@ -34,7 +34,7 @@ public class Trie {
         if (newWord.isEmpty()) {
             terminal = true;
         }
-        
+
         int index = findLetterIndex(letter);
         if (index >= 0) { // go to next Trie vertex
             Trie NewTrie = this.childs[index];
@@ -66,9 +66,20 @@ public class Trie {
         return false;
     }
 
-    // public boolean startsWith(String prefix) {
-    // 
-    // }
+    public boolean startsWith(String prefix) {
+        prefix = prefix.toLowerCase();
+        if (prefix.isEmpty()) return true;
+
+        char letter = prefix.charAt(0); // get first letter from prefix
+        String newPrefix = prefix.substring(1); // cut first letter from prefix
+
+        int index = this.findLetterIndex(letter);
+        if (index >= 0) {
+            Trie newTrie = this.childs[index];
+            return newTrie.startsWith(newPrefix);
+        }
+        return false;
+    }
 
     // public List<String> getByPrefix(String prefix) {
     // 
