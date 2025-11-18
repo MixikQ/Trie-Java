@@ -2,7 +2,7 @@
 import java.util.Arrays;
 import java.util.List;
 
-public class Trie {
+public class Trie{
     private Trie[] childs;
     private boolean terminal;
     private final char letter;
@@ -80,7 +80,7 @@ public class Trie {
         return false;
     }
 
-    public List<String> getAllWords(String currentWord) {
+    private List<String> getAllWords(String currentWord) {
         String[] listWords = new String[0];
         currentWord += this.letter;
 
@@ -102,9 +102,13 @@ public class Trie {
         return Arrays.asList(listWords);
     }
 
+    public List<String> getAllWords() {
+        return getAllWords("");
+    }
+
     public List<String> getByPrefix(String prefix) {
         prefix = prefix.toLowerCase();
-        if (prefix.isEmpty()) return this.getAllWords(prefix);
+        if (prefix.isEmpty()) return this.getAllWords();
 
         char letter = prefix.charAt(0); // get first letter from prefix
         String newPrefix = prefix.substring(1); // cut first letter from prefix
@@ -117,4 +121,3 @@ public class Trie {
         return Arrays.asList(new String[0]);
     }
 }
- // "\0" a a a 
