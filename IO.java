@@ -8,10 +8,20 @@ abstract public class IO {
         return sc.nextLine().toLowerCase().strip();
     }
 
-    public boolean isCorrect(String s) {
+    public boolean isCorrectString(String s) {
         for (char iter : s.toCharArray()) {
             if (!"abcdefghijklmnopqrstuvwxyz".contains(String.valueOf(iter))) return false;
         }
         return true;
+    }
+
+    public boolean isCorrectNumber(String s) {
+        return "012345".contains(s);
+    }
+
+    public void exit() {
+        System.out.println("Exiting the program. Press Enter to continue...");
+        input();
+        System.exit(0);
     }
 }
