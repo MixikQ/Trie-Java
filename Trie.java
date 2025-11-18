@@ -1,5 +1,6 @@
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Trie {
     private Trie[] childs;
@@ -26,14 +27,12 @@ public class Trie {
 
     public void insertWord(String word) {
         word = word.toLowerCase();
-        if (word.isEmpty()) return;
-
+        if (word.isEmpty()) {
+            terminal = true;
+            return;
+        }
         char letter = word.charAt(0); // get first letter from word
         String newWord = word.substring(1); // cut first letter from word
-
-        if (newWord.isEmpty()) {
-            terminal = true;
-        }
 
         int index = findLetterIndex(letter);
         if (index >= 0) { // go to next Trie vertex
@@ -81,7 +80,41 @@ public class Trie {
         return false;
     }
 
-    // public List<String> getByPrefix(String prefix) {
-    // 
-    // }
+    public List<String> getAllWords(String currentWord) {
+        String[] listWords = new String[0];
+        currentWord += this.letter;
+
+        if (this.terminal == true) { // if word full 
+                listWords = Arrays.copyOf(listWords, listWords.length + 1); // add 1 blank space 
+                listWords[listWords.length - 1] = currentWord; // fill blank with current word
+            }
+
+        for (int i = 0; i < this.childs.length; ++i) { // dfs
+            Trie newTrie = this.childs[i]; // go to next child
+            
+            { // block for temp variables
+                String[] newList = newTrie.getAllWords(currentWord).toArray(new String[0]); // recursively get all words with prefix
+                String[] tempList = Arrays.copyOf(listWords, newList.length + listWords.length); // add space to newList
+                System.arraycopy(newList, 0, tempList, listWords.length, newList.length); // paste newList to copy
+                listWords = tempList; // replace listWords with larger tempList
+            }
+        }
+        return Arrays.asList(listWords);
+    }
+
+    public List<String> getByPrefix(String prefix) {
+        prefix = prefix.toLowerCase();
+        if (prefix.isEmpty()) return this.getAllWords(prefix);
+
+        char letter = prefix.charAt(0); // get first letter from prefix
+        String newPrefix = prefix.substring(1); // cut first letter from prefix
+
+        int index = this.findLetterIndex(letter);
+        if (index >= 0) {
+            Trie newTrie = this.childs[index];
+            return newTrie.getByPrefix(newPrefix);
+        }
+        return Arrays.asList(new String[0]);
+    }
 }
+ // "\0" a a a 
