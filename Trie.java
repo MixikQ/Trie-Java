@@ -1,6 +1,7 @@
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Trie{
     private Trie[] childs;
@@ -116,7 +117,7 @@ public class Trie{
         int index = this.findLetterIndex(letter);
         if (index >= 0) {
             Trie newTrie = this.childs[index];
-            return newTrie.getByPrefix(newPrefix);
+            return newTrie.getByPrefix(newPrefix).stream().map(item -> ((!newPrefix.isEmpty()) ? letter : "") + item).collect(Collectors.toList());
         }
         return Arrays.asList(new String[0]);
     }
