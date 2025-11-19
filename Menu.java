@@ -94,4 +94,24 @@ public class Menu extends IO {
             }  
         }
     }
+
+    public void cyclePages(Pages nextPage) {
+        switch (nextPage) {
+            case Pages.EXIT -> {
+                exit();
+            }
+            case Pages.INSERT -> {
+                cyclePages(printInsert());
+            }
+            case Pages.CHECK -> {
+                cyclePages(printCheck());
+            }
+            case Pages.LIST -> {
+                cyclePages(printList());
+            }
+            case Pages.MENU -> {
+                cyclePages(printMenu());
+            }
+        }
+    }
 }
