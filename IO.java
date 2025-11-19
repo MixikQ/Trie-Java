@@ -15,8 +15,14 @@ abstract public class IO {
         return true;
     }
 
-    public boolean isCorrectNumber(String s) {
-        return "012345".contains(s);
+    public boolean isCorrectNumber(String s, int from, int to) {
+        try {
+            int num = Integer.parseInt(s);
+            if (num < from || num > to) return false;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
     }
 
     public void exit() {
