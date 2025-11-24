@@ -4,7 +4,7 @@ public class Menu extends IO {
     
     public Pages printMenu() {
         System.out.println("Current Trie:");
-        // print Trie
+        trie.printTrie();
 
         System.out.println("\n");
         System.out.println("Available commands:");

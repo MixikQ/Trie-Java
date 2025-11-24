@@ -2,13 +2,15 @@
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import jdk.jfr.Throttle;
 
 public class Trie{
     private Trie[] childs;
     private boolean terminal;
     private final char letter;
 
-    static boolean flag = false;
+    private static boolean flag = false;
+    private static int currentDepth = 0;
     
     public Trie(char letter) {
         childs = new Trie[0];
@@ -152,5 +154,15 @@ public class Trie{
             return newTrie.getByPrefix(newPrefix).stream().map(item -> ((!newPrefix.isEmpty()) ? letter : "") + item).collect(Collectors.toList());
         }
         return Arrays.asList(new String[0]);
+    }
+
+    public void printTrie() {
+        System.out.println(((currentDepth > 0) ? (" ".repeat(currentDepth-1) + "└") : ("root")) + letter + ((this.terminal == true) ? "." : "")); //⊢
+        for (int i = 0; i < this.childs.length; ++i) {
+            currentDepth++;
+            Trie newTrie = this.childs[i];
+            newTrie.printTrie();
+            currentDepth--;
+        }
     }
 }
