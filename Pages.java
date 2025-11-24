@@ -3,5 +3,6 @@ public enum Pages {
     INSERT,
     CHECK,
     LIST,
+    REMOVE,
     MENU;
 }

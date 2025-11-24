@@ -7,6 +7,8 @@ public class Trie{
     private Trie[] childs;
     private boolean terminal;
     private final char letter;
+
+    static boolean flag = false;
     
     public Trie(char letter) {
         childs = new Trie[0];
@@ -47,16 +49,46 @@ public class Trie{
         }
     }
 
-    public boolean containsWord(String word) {
-        word = word.toLowerCase();
-        if (word.isEmpty()) return true;
+    public boolean removeWord(String word) {
+        if (containsWord(word)) {
+            word = word.toLowerCase();
+            if (word.isEmpty()) {
+                this.terminal = false;
+                if (this.childs.length == 0) {
+                    flag = true;
+                }
+                return true;
+            }
+            char letter = word.charAt(0); // get first letter from word
+            String newWord = word.substring(1); // cut first letter from word
 
-        char letter = word.charAt(0); // get first letter from word
-        String newWord = word.substring(1); // cut first letter from word
-
-        if (newWord.isEmpty() && this.terminal == false) {
+            int index = findLetterIndex(letter);
+            if (index >= 0) { // go to next Trie vertex
+                Trie NewTrie = this.childs[index];
+                NewTrie.removeWord(newWord);
+                if (flag) {
+                    Trie[] temp = new Trie[this.childs.length - 1];
+                    for (int i = 0, j = 0; i < this.childs.length; ++i) {
+                        if (i != index) {
+                            temp[j++] = this.childs[i];
+                        }
+                    }
+                    this.childs = temp;
+                    flag = false;
+                }
+            }
+        } else {
             return false;
         }
+        return true;
+    }
+    public boolean containsWord(String word) {
+        word = word.toLowerCase();
+        if (word.isEmpty()) {
+            return this.terminal;
+        }
+        char letter = word.charAt(0); // get first letter from word
+        String newWord = word.substring(1); // cut first letter from word
 
         int index = this.findLetterIndex(letter);
         if (index >= 0) {
